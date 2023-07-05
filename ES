@@ -1,0 +1,48 @@
+<html>
+  <body>
+    <h1>Emoji Search</h1>
+    <input type="text" id="searchInput" placeholder="Search emojis">
+    <div id="emojiResults"></div>
+    <script>
+      function searchEmojis() {
+        var searchInput = document.getElementById('searchInput').value.toLowerCase();
+        var emojiResults = document.getElementById('emojiResults');
+        emojiResults.innerHTML = '';
+
+        var filteredEmojis = emojis.filter(function(emoji) {
+          return emoji.keywords.includes(searchInput);
+        });
+
+        filteredEmojis.forEach(function(emoji) {
+          var emojiElement = document.createElement('span');
+          emojiElement.className = 'emoji';
+          emojiElement.textContent = emoji.symbol;
+          emojiElement.title = emoji.name;
+          emojiElement.addEventListener('click', function() {
+            copyToClipboard(emoji.symbol);
+          });
+
+          emojiResults.appendChild(emojiElement);
+        });
+      }
+
+      function copyToClipboard(text) {
+        var dummyElement = document.createElement('textarea');
+        dummyElement.value = text;
+        document.body.appendChild(dummyElement);
+        dummyElement.select();
+        document.execCommand('copy');
+        document.body.removeChild(dummyElement);
+      }
+
+      var emojis = [
+        { name: 'Grinning Face', symbol: '😀', keywords: ['grinning', 'face'] },
+        { name: 'Thumbs Up', symbol: '👍', keywords: ['thumbs', 'up', 'like'] },
+        // Add more emojis to the array as needed
+      ];
+
+      var searchInput = document.getElementById('searchInput');
+      searchInput.addEventListener('input', searchEmojis);
+    </script>
+  </body>
+</html>
